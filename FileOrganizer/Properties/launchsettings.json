@@ -1,0 +1,10 @@
+﻿{
+    "profiles": {
+      "FileOrganizer (Package)": {
+        "commandName": "MsixPackage"
+      },
+      "FileOrganizer (Unpackaged)": {
+        "commandName": "Project"
+      }
+    }
+}
