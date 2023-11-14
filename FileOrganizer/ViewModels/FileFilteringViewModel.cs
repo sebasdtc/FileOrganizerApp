@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using FileOrganizer.Core.Contracts.Services;
-using FileOrganizer.Core.Models;
+using FileToolKit;
 
 namespace FileOrganizer.ViewModels;
 
@@ -20,10 +20,10 @@ public partial class FileFilteringViewModel : ObservableRecipient
 
     private async void ShowFileTypeInfo()
     {
-        var path = "C:\\Users\\sebas\\Downloads\\";
+        var path = "C:\\Users\\sebas\\Downloads";
         Source.Clear();
+                
         var data = await _fileTypeInfoService.GetFileTypeInfoAsync(path);
-
         foreach (var item in data)
         {
             Source.Add(item);

@@ -2,7 +2,6 @@
 using FileOrganizer.Contracts.Services;
 using FileOrganizer.Core.Contracts.Services;
 using FileOrganizer.Core.Services;
-using FileOrganizer.Helpers;
 using FileOrganizer.Models;
 using FileOrganizer.Services;
 using FileOrganizer.ViewModels;
@@ -68,7 +67,6 @@ public partial class App : Application
             // Core Services
             services.AddSingleton<IFileService, FileService>();
             services.AddSingleton<IFileTypeInfoService, FileTypeInfoService>();
-
             // Views and ViewModels
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();

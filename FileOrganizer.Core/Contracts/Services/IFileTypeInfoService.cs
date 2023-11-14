@@ -1,4 +1,4 @@
-﻿using FileOrganizer.Core.Models;
+﻿using FileToolKit;
 
 namespace FileOrganizer.Core.Contracts.Services;
 public interface IFileTypeInfoService
