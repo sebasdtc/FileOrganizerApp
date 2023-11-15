@@ -37,15 +37,10 @@ internal class JsonHandler
     }
     public string GetFileImagenPath(string extension)
     {
-        if (_extensionTypeMapping.ContainsKey(extension))
-        {
-            //var p = "C:\\Users\\sebas\\OneDrive\\Dev Home\\Projects\\C#\\FileOrganizerApp\\FileToolKit\\Assets\\Icons\\";
-            return $"FileToolKit.Assets.Icons.{_extensionTypeMapping[extension]}.svg";
-            //return Path.Combine(p, $"{_extensionTypeMapping[extension.ToLower()]}.svg");
-            //return $"ms-appx:///Assets/Icons/{_extensionTypeMapping[Extension]}.svg";
-        }
-        return "FileToolKit.Assets.Icons.default.svg";
+        return _extensionTypeMapping.ContainsKey(extension) ?
+            $"FileToolKit.Assets.Img.{_extensionTypeMapping[extension]}.png" : "FileToolKit.Assets.Img.default.png";
     }
+
 
     private class Data
     {

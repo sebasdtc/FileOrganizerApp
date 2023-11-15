@@ -7,6 +7,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Models\**" />
+    <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Models\**" />
+    <Page Remove="Models\**" />
+    <PRIResource Remove="Models\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Assets\Data\FileIcons.json" />
   </ItemGroup>
   <ItemGroup>
@@ -19,7 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Assets\Img\" />
-    <Folder Include="Models\" />
   </ItemGroup>
 
   <ItemGroup>

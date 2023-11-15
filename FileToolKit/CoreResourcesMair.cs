@@ -4,7 +4,9 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Gaming.Input;
 using Windows.Storage;
+using Windows.Storage.Streams;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -15,12 +17,12 @@ public class CoreResourcesMair
 {
     public string GetInformationalVersion()
     {
-        Assembly assembly = Assembly.GetExecutingAssembly();
-        object[] customAttributes = assembly.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false);
+        var assembly = Assembly.GetExecutingAssembly();
+        var customAttributes = assembly.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false);
 
         if (customAttributes.Length > 0)
         {
-            AssemblyInformationalVersionAttribute informationalVersionAttribute = (AssemblyInformationalVersionAttribute)customAttributes[0];
+            var informationalVersionAttribute = (AssemblyInformationalVersionAttribute)customAttributes[0];
             return informationalVersionAttribute.InformationalVersion;
         }
 
@@ -48,18 +50,16 @@ public class CoreResourcesMair
         {
             throw new ArgumentException("Invalid directoryPath");
         }
-        string filePath = Path.Combine(directoryPath, @"Resources2Content\LeiaQuotes.txt");
+        var filePath = Path.Combine(directoryPath, @"Resources2Content\LeiaQuotes.txt");
 
-        using (var reader = new StreamReader(filePath))
+        using var reader = new StreamReader(filePath);
+        if (reader != null)
         {
-            if (reader != null)
-            {
-                return reader.ReadToEnd();
-            }
-            else
-            {
-                throw new Exception("Resource not found");
-            }
+            return reader.ReadToEnd();
+        }
+        else
+        {
+            throw new Exception("Resource not found");
         }
     }
     public byte[] GetResources2ContentLeiaImage()
@@ -73,7 +73,7 @@ public class CoreResourcesMair
         {
             throw new ArgumentException("Invalid directoryPath");
         }
-        string filePath = Path.Combine(directoryPath, @"Resources2Content\Leia001.jpg");
+        var filePath = Path.Combine(directoryPath, @"Resources2Content\Leia001.jpg");
         if (File.Exists(filePath))
         {
             return File.ReadAllBytes(filePath);
@@ -83,75 +83,71 @@ public class CoreResourcesMair
             throw new Exception("Resource not found");
         }
     }
-    public string GetResources3EmbeddedResourceDarthVaderQuotes()
+    public string GetResources3EmbeddedResourceDarthVaderQuotes(string fileName)
     {
         var assembly = Assembly.GetExecutingAssembly();
 
-        string fileName = "Starwars.Core.Resources.Resources3EmbeddedResource.DarthVaderQuotes.txt";
-
-        using (var stream = assembly.GetManifestResourceStream(fileName))
+        using var stream = assembly.GetManifestResourceStream(fileName);
+        if (stream != null)
         {
-            if (stream != null)
-            {
-                using (var reader = new StreamReader(stream))
-                {
-                    return reader.ReadToEnd();
-                }
-            }
-            else
-            {
-                throw new Exception("Resource not found");
-            }
+            using var reader = new StreamReader(stream);
+            return reader.ReadToEnd();
+        }
+        else
+        {
+            throw new Exception("Resource not found");
         }
 
     }
-    public byte[] GetResources3EmbeddedResourceDarthVaderImage()
+    public BitmapImage GetBitmapImagen(string fileName)
+    {
+        var imageBytes = GetResources3EmbeddedResourceDarthVaderImage(fileName);
+        var bitmapImage = new BitmapImage();
+        using var stream = new InMemoryRandomAccessStream();
+        using (var writer = new DataWriter(stream.GetOutputStreamAt(0)))
+        {
+            writer.WriteBytes(imageBytes);
+            writer.StoreAsync().GetResults();
+        }
+        bitmapImage.SetSource(stream);
+        return bitmapImage;
+    }
+    public byte[] GetResources3EmbeddedResourceDarthVaderImage(string fileName)
     {
         var assembly = Assembly.GetExecutingAssembly();
 
-        string fileName = "Core.Resources.Resources3EmbeddedResource.DarthVader001.jpg";
-
-        using (var stream = assembly.GetManifestResourceStream(fileName))
+        using var stream = assembly.GetManifestResourceStream(fileName);
+        if (stream != null)
         {
-            if (stream != null)
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    stream.CopyTo(memoryStream);
-                    return memoryStream.ToArray();
-                }
-            }
-            else
-            {
-                throw new Exception("Resource not found");
-            }
+            using var memoryStream = new MemoryStream();
+            stream.CopyTo(memoryStream);
+            return memoryStream.ToArray();
+        }
+        else
+        {
+            throw new Exception("Resource not found");
         }
     }
     public string GetSvgImageSource(string fileName)
     {
         var assembly = Assembly.GetExecutingAssembly();
-        string[] resourceNames = assembly.GetManifestResourceNames();
 
         //string fileName = $"Core.Resources3EmbeddedResource.{extension}.svg";
 
-        using (var stream = assembly.GetManifestResourceStream(fileName))
+        using var stream = assembly.GetManifestResourceStream(fileName);
+        if (stream != null)
         {
-            if (stream != null)
-            {
-                using (var reader = new StreamReader(stream))
-                {
-                    return reader.ReadToEnd();
-                }
-            }
-            else
-            {
-                throw new Exception("Resource not found");
-            }
+            using var reader = new StreamReader(stream);
+            return reader.ReadToEnd();
+        }
+        else
+        {
+            throw new Exception("Resource not found");
         }
     }
     public SvgImageSource LoadSvgFromString(string name)
     {
-        string svgString = GetSvgImageSource(name);
+        var svgString = GetSvgImageSource(name);
 
         // Crear un archivo temporal para almacenar la cadena SVG
         var newFile = ApplicationData.Current.LocalFolder.CreateFileAsync(Guid.NewGuid().ToString() + ".svg").GetAwaiter().GetResult();
@@ -185,9 +181,9 @@ public class CoreResourcesMair
 
     public bool IsDirectoryPath(string path)
     {
-        string directoryName = Path.GetDirectoryName(path);
+        var directoryName = Path.GetDirectoryName(path);
 
-        bool isDirectoryPath = !string.IsNullOrEmpty(directoryName);
+        var isDirectoryPath = !string.IsNullOrEmpty(directoryName);
 
         return isDirectoryPath;
     }

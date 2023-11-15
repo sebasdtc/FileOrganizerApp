@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace FileToolKit;
 public class FileHandler
@@ -12,7 +9,7 @@ public class FileHandler
     {
         File.Move(sourceFileName, destFileName);
     }
-    public static async Task<List<FileTypeInfo>> Read(string path)
+    public static List<FileTypeInfo> Read(string path)
     {
         CoreResourcesMair core = new();
         var json = new JsonHandler();
@@ -22,13 +19,9 @@ public class FileHandler
         foreach (var file in fileInfo)
         {
             var pathImage = json.GetFileImagenPath(file.Extension[1..]);
-            var svg = await core.LoadSvgFromStringAsync(pathImage);
-            fileTypeInfoList.Add(new FileTypeInfo(file, svg));
+            var img = core.GetBitmapImagen(pathImage);
+            fileTypeInfoList.Add(new FileTypeInfo(file, img));
         }
         return fileTypeInfoList;
-    }
-    public static SvgImageSource GetImageSource(string pathImage)
-    {
-        return new SvgImageSource(new Uri(pathImage));
     }
 }

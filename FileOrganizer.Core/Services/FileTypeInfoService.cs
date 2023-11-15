@@ -8,7 +8,7 @@ public class FileTypeInfoService : IFileTypeInfoService
 
     public async Task<IEnumerable<FileTypeInfo>> GetFileTypeInfoAsync(string folderPath)
     {
-        _allFileTypeInfo ??= new List<FileTypeInfo>(await FileHandler.Read(folderPath));
+        _allFileTypeInfo ??= new List<FileTypeInfo>(FileHandler.Read(folderPath));
         return _allFileTypeInfo;
     }
 }

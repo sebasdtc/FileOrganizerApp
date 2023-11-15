@@ -12,13 +12,13 @@ public class FileTypeInfo
     public string FullName { get; set; }
     public string Extension { get; set; }
     public DateTime CreationTime { get; set; }
-    public SvgImageSource FileImage { get; set; }
+    public BitmapImage FileImage { get; set; }
     public long Length { get; set; }
     // Analizar mejoras
     public string Size 
         => Length < 102398976 ? $"{Length / 1024} KB" : $"{Length / (1024 * 1024)} KB";
 
-    public FileTypeInfo(FileInfo fileInfo, SvgImageSource fileImage)
+    public FileTypeInfo(FileInfo fileInfo, BitmapImage fileImage)
     {
         Name = fileInfo.Name;
         FullName = fileInfo.FullName;
@@ -33,7 +33,7 @@ public class FileTypeInfo
         FullName = fileInfo.FullName;
         Extension = fileInfo.Extension;
         CreationTime = fileInfo.CreationTime;
-        FileImage = new SvgImageSource();
+        FileImage = new BitmapImage();
         Length = fileInfo.Length;
     }
 }
